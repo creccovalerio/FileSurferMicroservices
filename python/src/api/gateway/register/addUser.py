@@ -13,14 +13,6 @@ def register(request):
     username = request.form.get('username')
     password = request.form.get('password')
 
-    '''
-    basicAuth = (username, password)
-    
-    # post method allow to make a post request to our auth_service
-    response = requests.post(
-        f"http://{os.environ.get('AUTH_SVC_ADDRESS')}/register", auth=basicAuth
-    )
-    '''
     try:
         with grpc.insecure_channel(os.environ.get('AUTH_SVC_ADDRESS')) as channel:
             stub = LoginStub(channel)

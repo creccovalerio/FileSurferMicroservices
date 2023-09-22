@@ -1,19 +1,11 @@
-import gridfs, pika, json, os, tempfile
+import gridfs, pika, json, tempfile
 from pymongo import MongoClient
-from flask import Flask, request
-from flask_pymongo import PyMongo
 from concurrent import futures
 import grpc
 from protos.upload_pb2 import *
 from protos.upload_pb2_grpc import *
 
-#server = Flask(__name__)
-#server.config['SECRET_KEY'] = 'sarcasm'
-
 def upload_csv(username, file):
-
-    #mongo_csv = PyMongo(server, uri="mongodb://mongo:27017/csvs")
-    #mongo_arff = PyMongo(server, uri="mongodb://mongo:27017/arffs")
 
     client = MongoClient('mongodb://mongo:27017/')
     mongo_csv = client.csvs
@@ -24,13 +16,9 @@ def upload_csv(username, file):
 
     # create empty temp file
     tf = tempfile.NamedTemporaryFile()
-    # csv contents
-    #out = fs_csvs.get(ObjectId(message["csv_fid"]))
-    # add csv contents to empty file 
     tf.write(file)
     
     # write arff to the file
-    #tf_path = tempfile.gettempdir() + f"/file.csv"
     f = open(tf.name, "rb")
     data = f.read()
 
@@ -41,12 +29,10 @@ def upload_csv(username, file):
     try:
         fid = fs_csv.put(data)
         f.close()
-        #os.remove(tf_path)
     except Exception as err:
         print(err)
         return "internal server error csv", 502
     
-    #username = str(request.files['username'].read(), 'utf-8')
     message = {
         "csv_fid": str(fid),
         "arff_fid": None,

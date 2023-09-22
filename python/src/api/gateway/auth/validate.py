@@ -8,12 +8,7 @@ def token(request):
     token = str(request.cookies['x-access-token'])
     if not token:
         return None, ("missing credentials cookie", 401)
-
-    '''
-    response = requests.post(
-        f"http://{os.environ.get('AUTH_SVC_ADDRESS')}/validate",
-        headers={"Authorization": token},
-    )'''
+    
     try:
         with grpc.insecure_channel(os.environ.get('AUTH_SVC_ADDRESS')) as channel:
             stub = LoginStub(channel)

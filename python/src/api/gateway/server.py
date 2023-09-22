@@ -1,4 +1,4 @@
-import os, gridfs, json, jwt, datetime, requests
+import os, gridfs, jwt, datetime
 import grpc
 from flask import Flask, request, send_file, session, render_template, make_response, url_for, flash
 from flask_pymongo import PyMongo
@@ -170,9 +170,6 @@ def upload_csv():
         resp = make_response(render_template('login.html'), 400)
         return resp
 
-    # deserialize an instance containing a JSON document to a Python object
-    #access = json.loads(access)
-
     if access=="True":
         # upload just 1 file per time
         if len(request.files) > 1 or len(request.files) < 1:
@@ -184,21 +181,9 @@ def upload_csv():
             flash("Please click the right button!")
             resp = make_response(render_template('upload.html'), 400)
             return resp
-        
-        #username = access['username']
-
-        
+       
         for _, file in request.files.items():
-            '''
-            files = {
-                "username": username,
-                "file": file
-            }
-            
-            response = requests.post(
-                f"http://{os.environ.get('UPLOAD_SVC_ADDRESS')}/upload_csv", files=files
-            )
-            '''
+        
             try:
                 with grpc.insecure_channel(os.environ.get('UPLOAD_SVC_ADDRESS')) as channel:
                     stub = UploadStub(channel)
@@ -227,8 +212,6 @@ def download_arff():
         resp = make_response(render_template('login.html'), 400)
         return resp
 
-    #access = json.loads(access)
-
     if access == "True":
         fid_string = request.args.get("fidARFF")
 
@@ -237,13 +220,6 @@ def download_arff():
             resp = make_response(render_template('download.html'), 200)
             return resp
 
-        '''        
-        data = {'fid':fid_string}
-
-        response = requests.get(
-            f"http://{os.environ.get('DOWNLOAD_SVC_ADDRESS')}/download_arff", files=data
-        )
-        '''
         try:
             with grpc.insecure_channel(os.environ.get('DOWNLOAD_SVC_ADDRESS')) as channel:
                 stub = DownloadStub(channel)

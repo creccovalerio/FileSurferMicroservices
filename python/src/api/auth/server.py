@@ -1,22 +1,9 @@
-import jwt, datetime, os, MySQLdb
-from flask import Flask, request
-from flask_mysqldb import MySQL
+import jwt, datetime, os
 from concurrent import futures
-import grpc, logging, json
+import grpc, logging
 import mysql.connector
 from protos.login_pb2 import *
 from protos.login_pb2_grpc import *
-
-#server = Flask(__name__)
-
-#mysql = MySQL(server)
-#server.config["MYSQL_HOST"] = os.environ.get("MYSQL_HOST")
-#print(server.config["MYSQL_HOST"])
-#server.config["MYSQL_USER"] = os.environ.get("MYSQL_USER")
-#server.config["MYSQL_PASSWORD"] = os.environ.get("MYSQL_PASSWORD")
-#server.config["MYSQL_DB"] = os.environ.get("MYSQL_DB")
-#server.config["MYSQL_PORT"] = int(os.environ.get("MYSQL_PORT"))
-# config
 
 def connect_mysql():
     try:

@@ -28,9 +28,9 @@ spec:
                 name: gateway-secret
           resources:
             limits:
-              cpu: 150m
+              cpu: 300m
             requests:
-              cpu: 100m
+              cpu: 250m
 ---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
@@ -54,4 +54,4 @@ spec:
         name: cpu
         target: 
           type: Utilization
-          averageUtilization: 50
+          averageUtilization: 30
