@@ -69,11 +69,13 @@ def register(username, password):
     logging.basicConfig(filename='example.log', encoding='utf-8', level=logging.WARNING)
     logging.warning("INFOS: " + username + password)
     
-    cur.execute(
-        "INSERT INTO user (email, password) VALUES (%s, %s)", (username, password,)
-    )
-
-    connection.commit()
+    try:
+        cur.execute(
+            "INSERT INTO user (email, password) VALUES (%s, %s)", (username, password,)
+        )
+        connection.commit()
+    except:
+        return "user already exists!", 500
     
     if(cur.rowcount == 1):
         cur.close()
